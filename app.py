@@ -18,7 +18,7 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Custom CSS for Modern UI
+# Custom CSS for Modern Typography & Clean Styling
 st.markdown("""
 <style>
     .main-header {
@@ -31,13 +31,6 @@ st.markdown("""
         font-size: 1.05rem;
         color: #64748B;
         margin-bottom: 1.5rem;
-    }
-    .metric-card {
-        background: #F8FAFC;
-        border: 1px solid #E2E8F0;
-        border-radius: 12px;
-        padding: 1.2rem;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
     }
     .status-pass {
         background-color: #DEF7EC;
@@ -54,13 +47,6 @@ st.markdown("""
         border-radius: 6px;
         font-weight: 700;
         display: inline-block;
-    }
-    .rec-box {
-        background-color: #EFF6FF;
-        border-left: 5px solid #2563EB;
-        padding: 1rem;
-        border-radius: 6px;
-        margin-top: 1rem;
     }
     .stButton>button {
         border-radius: 8px;
@@ -115,9 +101,7 @@ def main():
         try:
             rmse, r2, model_name, importances = get_model_metrics()
             st.subheader("📊 ML Model Evaluation")
-            col_m1, col_m2 = st.columns(2)
-            col_m1.metric("Test RMSE", f"{rmse:.2f} MPa")
-            col_m2.metric("Test R² Score", f"{r2:.3f}")
+            st.write(f"**Test RMSE**: `{rmse:.2f} MPa` | **Test R²**: `{r2:.3f}`")
             st.caption(f"**Algorithm**: `{model_name}` trained on UCI Dataset (1030 samples, 80/20 split, seed=42).")
             st.caption("🔒 **Inference Rule**: All predictions locked at **28 days age**.")
         except Exception as e:
@@ -179,35 +163,35 @@ def main():
             strength_pass = pred_strength >= min_req_strength
             compliance_pass = is456_status["is_compliant"]
 
-            # Display Dual Metric Cards
+            # Display Dual Native Bordered Cards
             card_col1, card_col2 = st.columns(2)
 
             with card_col1:
-                st.markdown('<div class="metric-card">', unsafe_allow_html=True)
-                st.markdown("#### 🤖 ML Strength Prediction")
-                st.markdown(f"## {pred_strength:.2f} <span style='font-size:1rem'>MPa</span>", unsafe_allow_html=True)
-                st.markdown(f"**Mapped IS 456 Grade**: `{mapped_grade}`")
-                if strength_pass:
-                    st.markdown('<span class="status-pass">✅ STRENGTH PASS</span>', unsafe_allow_html=True)
-                    st.caption(f"Meets target {target_grade} requirement ({min_req_strength} MPa).")
-                else:
-                    st.markdown('<span class="status-fail">❌ STRENGTH FAIL</span>', unsafe_allow_html=True)
-                    st.caption(f"Below target {target_grade} requirement ({min_req_strength} MPa).")
-                st.markdown('</div>', unsafe_allow_html=True)
+                with st.container(border=True):
+                    st.markdown("#### 🤖 ML Strength Prediction")
+                    st.markdown(f"## {pred_strength:.2f} **MPa**")
+                    st.markdown(f"**Mapped IS 456 Grade**: `{mapped_grade}`")
+                    if strength_pass:
+                        st.markdown('<span class="status-pass">✅ STRENGTH PASS</span>', unsafe_allow_html=True)
+                        st.caption(f"Meets target {target_grade} requirement ({min_req_strength} MPa).")
+                    else:
+                        st.markdown('<span class="status-fail">❌ STRENGTH FAIL</span>', unsafe_allow_html=True)
+                        st.caption(f"Below target {target_grade} requirement ({min_req_strength} MPa).")
 
             with card_col2:
-                st.markdown('<div class="metric-card">', unsafe_allow_html=True)
-                st.markdown("#### 📜 IS 456:2000 Compliance")
-                if compliance_pass:
-                    st.markdown("## COMPLIANT", unsafe_allow_html=True)
-                    st.markdown('<span class="status-pass">✅ CODE PASS</span>', unsafe_allow_html=True)
-                else:
-                    st.markdown("## VIOLATION", unsafe_allow_html=True)
-                    st.markdown('<span class="status-fail">❌ CODE FAIL</span>', unsafe_allow_html=True)
+                with st.container(border=True):
+                    st.markdown("#### 📜 IS 456:2000 Compliance")
+                    if compliance_pass:
+                        st.markdown("## COMPLIANT")
+                        st.markdown('<span class="status-pass">✅ CODE PASS</span>', unsafe_allow_html=True)
+                    else:
+                        st.markdown("## VIOLATION")
+                        st.markdown('<span class="status-fail">❌ CODE FAIL</span>', unsafe_allow_html=True)
 
-                st.markdown(f"• **Cement**: `{c_val:.1f}` vs min `{is456_status['min_cement_required']:.0f}` kg/m³ " + ("✅" if is456_status['cement_pass'] else "❌"))
-                st.markdown(f"• **W/C Ratio**: `{wc_actual:.3f}` vs max `{is456_status['max_wc_allowed']:.2f}` " + ("✅" if is456_status['wc_pass'] else "❌"))
-                st.markdown('</div>', unsafe_allow_html=True)
+                    c_check = "✅" if is456_status['cement_pass'] else "❌"
+                    wc_check = "✅" if is456_status['wc_pass'] else "❌"
+                    st.markdown(f"• **Cement**: `{c_val:.1f}` vs min `{is456_status['min_cement_required']:.0f}` kg/m³ {c_check}")
+                    st.markdown(f"• **W/C Ratio**: `{wc_actual:.3f}` vs max `{is456_status['max_wc_allowed']:.2f}` {wc_check}")
 
             st.divider()
 
@@ -226,11 +210,13 @@ def main():
                 st.markdown("#### 🔄 Re-prediction & Simulation Verification")
                 col_ver1, col_ver2 = st.columns(2)
                 with col_ver1:
-                    st.markdown(f"**Original 28-Day Strength**: `{rec_result['original_strength']:.2f} MPa`")
-                    st.markdown(f"**Original Compliance**: `{'PASS' if rec_result['initial_compliance']['is_compliant'] else 'FAIL'}`")
+                    with st.container(border=True):
+                        st.markdown(f"**Original 28-Day Strength**: `{rec_result['original_strength']:.2f} MPa`")
+                        st.markdown(f"**Original Compliance**: `{'PASS' if rec_result['initial_compliance']['is_compliant'] else 'FAIL'}`")
                 with col_ver2:
-                    st.markdown(f"**Adjusted 28-Day Strength**: `{rec_result['adjusted_strength']:.2f} MPa`")
-                    st.markdown(f"**Adjusted Compliance**: `{'PASS' if rec_result['adjusted_compliance']['is_compliant'] else 'FAIL'}`")
+                    with st.container(border=True):
+                        st.markdown(f"**Adjusted 28-Day Strength**: `{rec_result['adjusted_strength']:.2f} MPa`")
+                        st.markdown(f"**Adjusted Compliance**: `{'PASS' if rec_result['adjusted_compliance']['is_compliant'] else 'FAIL'}`")
 
                 if st.button("✨ Apply Recommended Mix Proportions"):
                     st.session_state.mix_inputs = rec_result["adjusted_mix"].copy()
