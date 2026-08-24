@@ -1,17 +1,98 @@
 # 🏗️ Intelligent Concrete Mix Design Assistant (IS 456:2000 & ML Powered)
 
+[![Live Web Application](https://img.shields.io/badge/Live_App-Streamlit_Cloud-FF4B4B?style=for-the-badge&logo=streamlit)](https://concrete-mix-assistant-gws95dtjpkxwrvwunuqcnt.streamlit.app/)
+[![GitHub Repository](https://img.shields.io/badge/GitHub-Repository-181717?style=for-the-badge&logo=github)](https://github.com/abhi3233/concrete-mix-assistant)
+[![IS 456:2000 Compliant](https://img.shields.io/badge/Civil_Code-IS_456%3A2000-008080?style=for-the-badge)](https://github.com/abhi3233/concrete-mix-assistant)
+
 An end-to-end Machine Learning web application designed for civil engineers, site contractors, and concrete technologists. Built in compliance with **IS 456:2000 Table 5** standards and trained on the **UCI Concrete Compressive Strength Dataset**.
+
+---
+
+## 🌐 Live Application URL & Deployment Overview
+
+### 👉 **Live Web Application**: [https://concrete-mix-assistant-gws95dtjpkxwrvwunuqcnt.streamlit.app/](https://concrete-mix-assistant-gws95dtjpkxwrvwunuqcnt.streamlit.app/)
+
+### 🚀 Basic Deployment Architecture:
+- **Hosting Platform**: Streamlit Community Cloud (Global CDN).
+- **Source Repository**: Continuous Deployment directly connected to `main` branch of [GitHub Repo](https://github.com/abhi3233/concrete-mix-assistant.git).
+- **Public Access**: 100% free, publicly accessible with **no login required** for evaluators or field engineers.
+- **Runtime Environment**: Containerized Python 3.13 environment running trained XGBoost ML inference, automated IS 456 logic, and real-time recommendation engine.
+
+---
+
+## 📖 First-Time Visitor Guide ("What is What" on Screen)
+
+When a user or evaluator opens [https://concrete-mix-assistant-gws95dtjpkxwrvwunuqcnt.streamlit.app/](https://concrete-mix-assistant-gws95dtjpkxwrvwunuqcnt.streamlit.app/), here is a complete guide to every element displayed on screen:
+
+```
+┌─────────────────────────────────────────────────────────────────────────────────────────────────┐
+│ 🏗️ INTELLIGENT CONCRETE MIX DESIGN ASSISTANT (LIVE INTERFACE)                                  │
+├─────────────────────────────────────┬───────────────────────────────────────────────────────────┤
+│ ⚙️ LEFT SIDEBAR CONTROLS            │ 📐 MAIN DASHBOARD (INPUTS & LIVE ANALYSIS)                │
+│                                     │                                                           │
+│ 1️⃣ Target IS 456 Grade Selector     │ 4️⃣ Concrete Mix Proportions Input Form                    │
+│    • Choose M20, M25, M30, M35, M40 │    • 7 constituent weight sliders/boxes (kg/m³)          │
+│    • Displays Code Min/Max values   │    • Cement, Slag, Fly Ash, Water, Superplasticizer,   │
+│                                     │      Coarse Aggregate, Fine Aggregate                    │
+│ 2️⃣ ML Model Metrics                 │                                                           │
+│    • Test RMSE: 4.71 MPa            │ 5️⃣ ⚖️ Total Mix Density Monitor                          │
+│    • Test R²: 0.914                 │    • Sums total weight per m³ (Target ≈ 2400 kg/m³)      │
+│    • Curing Age: 28 Days Locked     │                                                           │
+│                                     │ 6️⃣ 🤖 ML Strength Prediction Card                        │
+│ 3️⃣ 💡 Quick Test Presets            │    • Predicted Strength (MPa) & Mapped IS 456 Grade      │
+│    • Standard M30 Mix               │    • STRENGTH PASS / STRENGTH FAIL Badge                  │
+│    • Low Cement Violating Mix       │                                                           │
+│    • High W/C Ratio Violating Mix   │ 7️⃣ 📜 IS 456:2000 Code Compliance Card                   │
+│    • High Strength M40+ Mix         │    • Min Cement Check & Max W/C Ratio (Water ÷ Cement)    │
+│                                     │    • CODE PASS / CODE FAIL Badge                          │
+│                                     │                                                           │
+│                                     │ 8️⃣ 💡 Intelligent Recommendation Engine                   │
+│                                     │    • Directional Adjustments (± kg/m³)                    │
+│                                     │    • Before vs After Verification Table                   │
+│                                     │    • ✨ 1-Click "Apply Recommended Mix" Button            │
+└─────────────────────────────────────┴───────────────────────────────────────────────────────────┘
+```
+
+### 1️⃣ Target IS 456 Grade Selector *(Left Sidebar)*
+- **What it is**: A drop-down menu allowing you to select your target concrete grade (**M20, M25, M30, M35, or M40**).
+- **What it does**: Dynamically loads code-mandated IS 456:2000 Table 5 requirements (Minimum 28-day strength, minimum cement content, and maximum allowable water-cement ratio).
+
+### 2️⃣ ML Model Metrics Card *(Left Sidebar)*
+- **What it is**: Live model performance indicator.
+- **What it does**: Displays the trained XGBoost model's accuracy on the 206-sample test set (**$R^2 = 0.914$**, **$\text{RMSE} = 4.71 \text{ MPa}$**) and confirms that all inference calls strictly enforce a **28-day curing age (`age = 28.0`)**.
+
+### 3️⃣ 💡 Quick Test Presets *(Left Sidebar)*
+- **What it is**: 4 pre-configured mix formulations for instant testing.
+- **What it does**: Clicking **"Apply Selected Preset"** loads edge-case mix proportions (e.g. *Low Cement Mix* or *High W/C Mix*) into the form so you can test how the app detects failures and recommends fixes.
+
+### 4️⃣ 📐 7-Ingredient Mix Input Form *(Main Left Column)*
+- **What it is**: Numerical input fields for $1 \text{ m}^3$ of fresh concrete.
+- **What it does**: Accepts constituent weights ($\text{kg/m}^3$) for Cement, Blast Furnace Slag, Fly Ash, Water, Superplasticizer, Coarse Aggregate, and Fine Aggregate.
+
+### 5️⃣ ⚖️ Real-time Total Mix Density Monitor *(Main Left Column)*
+- **What it is**: Real-time mass summation gauge.
+- **What it does**: Calculates total mix weight per $\text{m}^3$ ($\text{Target} \approx 2400 \text{ kg/m}^3$) and alerts you if density strays outside structural norms ($2200 - 2600 \text{ kg/m}^3$).
+
+### 6️⃣ 🤖 ML Strength Prediction Card *(Main Right Column)*
+- **What it is**: Machine Learning prediction output box.
+- **What it does**: Displays predicted 28-day strength in MPa, mapped IS 456 grade (e.g. `M40+`), and a green **`STRENGTH PASS`** or red **`STRENGTH FAIL`** badge depending on whether predicted strength meets your selected target grade.
+
+### 7️⃣ 📜 IS 456:2000 Code Compliance Card *(Main Right Column)*
+- **What it is**: Independent civil engineering code compliance checker.
+- **What it does**: Calculates W/C ratio as $\text{Water} \div \text{Cement}$ (excluding fly ash and slag per IS 456 Table 5), checks minimum cement requirements, and displays an independent green **`CODE PASS`** or red **`CODE FAIL`** badge.
+
+### 8️⃣ 💡 Intelligent Recommendation Engine *(Main Bottom Panel)*
+- **What it is**: Automated optimization and re-simulation panel.
+- **What it does**: Triggers whenever a mix fails strength OR compliance. It provides exact directional adjustments ($\pm \text{kg/m}^3$), displays a **Before vs After verification table**, and provides a **"✨ Apply Recommended Mix Proportions"** button to load the verified mix into the form.
 
 ---
 
 ## 🛠️ Comprehensive Technology Stack & Architecture Details
 
-The application is built using a modern, robust Python machine learning and web stack designed for production reliability, fast inference, and seamless cloud deployment.
-
 | Layer / Category | Technology / Library | Version | Purpose & Technical Role |
 | :--- | :--- | :---: | :--- |
 | **Language** | **Python** | `3.10+ / 3.13` | Core runtime environment for data science, ML pipeline, and application logic. |
-| **Machine Learning** | **XGBoost Regressor** | `^3.4.1` | **Primary Predictive Model**: Selected after benchmarking for non-linear interactions ($R^2 = \mathbf{0.9141}$, $\text{RMSE} = \mathbf{4.71 \text{ MPa}}$). |
+| **Machine Learning** | **XGBoost Regressor** | `^3.4.1` | **Primary Predictive Model**: Selected for superior non-linear performance ($R^2 = \mathbf{0.9141}$, $\text{RMSE} = \mathbf{4.71 \text{ MPa}}$). |
 | **Data Science & ML** | **Scikit-Learn** | `^1.9.0` | Dataset train/test splitting (`80/20, seed=42`), evaluation metrics (`r2_score`, `mean_squared_error`), and baseline benchmarks. |
 | **Data Manipulation** | **Pandas** | `^3.0.5` | Tabular data cleaning, feature mapping, input dataframe construction, and mix vector transformations. |
 | **Numerical Computing** | **NumPy** | `^2.0.0` | High-performance vectorized arithmetic, RMSE calculation, and statistical computations. |
@@ -21,74 +102,8 @@ The application is built using a modern, robust Python machine learning and web 
 | **Data Acquisition** | **Urllib & Zipfile** | Standard Library | Automated fetching and extraction of the raw UCI Concrete Compressive Strength dataset. |
 | **Excel Parsing** | **Xlrd & Openpyxl** | `^2.0.2` / `^3.1.5` | Parsing and loading binary Microsoft Excel files (`Concrete_Data.xls`). |
 | **Automated Testing** | **Pytest** | `^9.1.1` | Unit test suite verifying IS 456 logic, grade mapping, 28-day age constraint, and recommendation re-simulation. |
-| **Version Control** | **Git & GitHub** | Standard | Source code versioning, collaboration, and public repository hosting ([abhi3233/concrete-mix-assistant](https://github.com/abhi3233/concrete-mix-assistant.git)). |
-| **Cloud Deployment** | **Hugging Face Spaces** | Free Tier | Public web app hosting containerized with Streamlit runtime. |
-
----
-
-## 🖥️ Interactive Dashboard & Features Guide (What You Can Do)
-
-The application features a clean, responsive dual-column dashboard tailored for intuitive operation by both technical evaluators and field site engineers.
-
-```
-┌──────────────────────────────────────────────────────────────────────────────────────────────────┐
-│                                   MAIN APPLICATION DASHBOARD                                     │
-├──────────────────────────────────────┬───────────────────────────────────────────────────────────┤
-│ SIDEBAR CONTROLS                     │ MAIN CONTENT PANEL                                        │
-│                                      │                                                           │
-│ 📌 Target Grade Selector             │ 📐 Concrete Mix Inputs (7 Proportions)                   │
-│    • M20, M25, M30, M35, M40         │    • Cement, Slag, Fly Ash, Water, Superplasticizer,   │
-│    • Live IS 456 Table 5 Specs       │      Coarse Aggregate, Fine Aggregate                    │
-│                                      │    • Real-time Total Density Monitor (≈ 2400 kg/m³)       │
-│ 📊 ML Model Metrics                  │                                                           │
-│    • Test RMSE: 4.71 MPa             │ 🔍 Dual Independent Status Cards                         │
-│    • Test R²: 0.914                  │    • 🤖 ML Strength Prediction (MPa & Mapped Grade)       │
-│    • Locked 28-Day Curing Rule       │    • 📜 IS 456 Code Compliance (Cement & W/C Ratio)      │
-│                                      │                                                           │
-│ 💡 Quick Test Presets                │ 💡 Intelligent Recommendation & Simulation               │
-│    • Standard M30 Mix                │    • Directional Deltas (± kg/m³)                        │
-│    • Low Cement Violating Mix        │    • Before vs After Verification Table                   │
-│    • High W/C Ratio Violating Mix    │    • ✨ 1-Click "Apply Recommendation" Button            │
-│    • High Strength M40+ Mix          │                                                           │
-└──────────────────────────────────────┴───────────────────────────────────────────────────────────┘
-```
-
-### 1. 📌 Target Grade Selection & IS 456 Specification Card
-- **What It Does**: Allows users to select any target concrete grade (**M20, M25, M30, M35, M40**).
-- **What You Can Do**: Instantly view the code-mandated minimum 28-day compressive strength, minimum cement content, and maximum water-cement ratio required for structural compliance under IS 456:2000 Table 5.
-
-### 2. 📊 Real-time ML Model Performance & Reproducibility Metrics
-- **What It Does**: Displays test set **RMSE (`4.71 MPa`)** and test **$R^2$ score (`0.914`)** for the trained XGBoost model.
-- **What You Can Do**: Verify model accuracy, inspect the 80/20 train/test split details (`random_state=42`, 1030 samples), and confirm the locked 28-day curing age inference rule (`age = 28.0`).
-
-### 3. 💡 One-Click Quick Test Presets
-- **What It Does**: Provides pre-configured mix formulations:
-  - `Standard M30 Mix (Balanced)`
-  - `Low Cement Mix (Violates IS 456)`
-  - `High W/C Ratio Mix (Violates IS 456)`
-  - `High Strength M40+ Mix`
-- **What You Can Do**: Instantly load edge-case concrete mixes into the input form with 1 click to test how the app handles compliance violations, strength shortfalls, and recommendations.
-
-### 4. 📐 7-Ingredient Mix Input Panel
-- **What It Does**: Provides numerical inputs for Cement, Blast Furnace Slag, Fly Ash, Water, Superplasticizer, Coarse Aggregate, and Fine Aggregate (in $\text{kg/m}^3$).
-- **What You Can Do**: Enter custom mix proportions for $1 \text{ m}^3$ of fresh concrete and observe instant real-time recalculations.
-
-### 5. ⚖️ Real-time Total Mix Density Monitor
-- **What It Does**: Continuously sums all constituent weights per $\text{m}^3$ ($\text{Target} \approx 2400 \text{ kg/m}^3$).
-- **What You Can Do**: Monitor total mix mass and receive immediate warning alerts if a mix strays outside standard structural concrete density ($2200 - 2600 \text{ kg/m}^3$).
-
-### 6. 🔍 Dual Independent Status Dashboard
-- **What It Does**: Renders two decoupled status cards:
-  - **🤖 ML Strength Prediction Card**: Displays predicted 28-day strength in MPa, mapped IS 456 grade (e.g. `M40+`), and a `STRENGTH PASS` or `STRENGTH FAIL` badge.
-  - **📜 IS 456:2000 Compliance Card**: Independently checks Cement content vs minimum requirement and W/C ratio ($\text{Water} \div \text{Cement}$) vs maximum allowed ratio, displaying a `CODE PASS` or `CODE FAIL` badge.
-- **What You Can Do**: Instantly distinguish between a structural strength failure and a durability/compliance code violation so you never have to guess why a mix failed.
-
-### 7. 💡 Intelligent Recommendation Engine & Interactive Re-Simulation Panel
-- **What It Does**: Triggers automatically whenever a mix fails strength OR code compliance. Identifies root causes and calculates directional adjustments with exact quantity deltas ($\pm \text{kg/m}^3$).
-- **What You Can Do**:
-  - View explicit step-by-step ingredient modifications (e.g., *"Increase Cement by +40.0 kg/m³"* or *"Decrease Water by -15.0 kg/m³"*).
-  - Compare **Before vs After** strength predictions and compliance status in a side-by-side verification table.
-  - Click **"✨ Apply Recommended Mix Proportions"** to automatically load the optimized, verified mix directly into the input form!
+| **Version Control** | **Git & GitHub** | Standard | Source code versioning and public repository hosting ([abhi3233/concrete-mix-assistant](https://github.com/abhi3233/concrete-mix-assistant.git)). |
+| **Cloud Deployment** | **Streamlit Community Cloud** | Free Tier | Public web app hosting containerized with Streamlit runtime. |
 
 ---
 
@@ -202,15 +217,6 @@ Open browser at `http://localhost:8501`.
 ```bash
 pytest test_app.py
 ```
-
----
-
-## 🤗 Deploying to Hugging Face Spaces
-
-1. Create a new Space on [Hugging Face Spaces](https://huggingface.co/spaces).
-2. Select **Streamlit** as the Space SDK.
-3. Push all files (`app.py`, `is456_logic.py`, `ml_engine.py`, `recommender.py`, `train_model.py`, `requirements.txt`, `model_assets.joblib`) to your HF Space repo.
-4. Hugging Face will automatically install dependencies and launch the app at a public URL.
 
 ---
 
