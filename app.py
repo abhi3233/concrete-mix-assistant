@@ -18,9 +18,13 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Custom CSS for Modern Typography & Clean Styling
+# Custom CSS for Modern Typography & Clean Styling (Menu text fix)
 st.markdown("""
 <style>
+    /* Hide top hamburger menu & default footer for clean presentation */
+    #MainMenu {visibility: hidden;}
+    footer {visibility: hidden;}
+    
     .main-header {
         font-size: 2.2rem;
         font-weight: 800;
