@@ -4,6 +4,72 @@ An end-to-end Machine Learning web application designed for civil engineers, sit
 
 ---
 
+## 🖥️ Interactive Dashboard & Features Guide (What You Can Do)
+
+The application features a clean, responsive dual-column dashboard tailored for intuitive operation by both technical evaluators and field site engineers.
+
+```
+┌──────────────────────────────────────────────────────────────────────────────────────────────────┐
+│                                   MAIN APPLICATION DASHBOARD                                     │
+├──────────────────────────────────────┬───────────────────────────────────────────────────────────┤
+│ SIDEBAR CONTROLS                     │ MAIN CONTENT PANEL                                        │
+│                                      │                                                           │
+│ 📌 Target Grade Selector             │ 📐 Concrete Mix Inputs (7 Proportions)                   │
+│    • M20, M25, M30, M35, M40         │    • Cement, Slag, Fly Ash, Water, Superplasticizer,   │
+│    • Live IS 456 Table 5 Specs       │      Coarse Aggregate, Fine Aggregate                    │
+│                                      │    • Real-time Total Density Monitor (≈ 2400 kg/m³)       │
+│ 📊 ML Model Metrics                  │                                                           │
+│    • Test RMSE: 4.71 MPa             │ 🔍 Dual Independent Status Cards                         │
+│    • Test R²: 0.914                  │    • 🤖 ML Strength Prediction (MPa & Mapped Grade)       │
+│    • Locked 28-Day Curing Rule       │    • 📜 IS 456 Code Compliance (Cement & W/C Ratio)      │
+│                                      │                                                           │
+│ 💡 Quick Test Presets                │ 💡 Intelligent Recommendation & Simulation               │
+│    • Standard M30 Mix                │    • Directional Deltas (± kg/m³)                        │
+│    • Low Cement Violating Mix        │    • Before vs After Verification Table                   │
+│    • High W/C Ratio Violating Mix    │    • ✨ 1-Click "Apply Recommendation" Button            │
+│    • High Strength M40+ Mix          │                                                           │
+└──────────────────────────────────────┴───────────────────────────────────────────────────────────┘
+```
+
+### 1. 📌 Target Grade Selection & IS 456 Specification Card
+- **What It Does**: Allows users to select any target concrete grade (**M20, M25, M30, M35, M40**).
+- **What You Can Do**: Instantly view the code-mandated minimum 28-day compressive strength, minimum cement content, and maximum water-cement ratio required for structural compliance under IS 456:2000 Table 5.
+
+### 2. 📊 Real-time ML Model Performance & Reproducibility Metrics
+- **What It Does**: Displays test set **RMSE (`4.71 MPa`)** and test **$R^2$ score (`0.914`)** for the trained XGBoost model.
+- **What You Can Do**: Verify model accuracy, inspect the 80/20 train/test split details (`random_state=42`, 1030 samples), and confirm the locked 28-day curing age inference rule (`age = 28.0`).
+
+### 3. 💡 One-Click Quick Test Presets
+- **What It Does**: Provides pre-configured mix formulations:
+  - `Standard M30 Mix (Balanced)`
+  - `Low Cement Mix (Violates IS 456)`
+  - `High W/C Ratio Mix (Violates IS 456)`
+  - `High Strength M40+ Mix`
+- **What You Can Do**: Instantly load edge-case concrete mixes into the input form with 1 click to test how the app handles compliance violations, strength shortfalls, and recommendations.
+
+### 4. 📐 7-Ingredient Mix Input Panel
+- **What It Does**: Provides numerical inputs for Cement, Blast Furnace Slag, Fly Ash, Water, Superplasticizer, Coarse Aggregate, and Fine Aggregate (in $\text{kg/m}^3$).
+- **What You Can Do**: Enter custom mix proportions for $1 \text{ m}^3$ of fresh concrete and observe instant real-time recalculations.
+
+### 5. ⚖️ Real-time Total Mix Density Monitor
+- **What It Does**: Continuously sums all constituent weights per $\text{m}^3$ ($\text{Target} \approx 2400 \text{ kg/m}^3$).
+- **What You Can Do**: Monitor total mix mass and receive immediate warning alerts if a mix strays outside standard structural concrete density ($2200 - 2600 \text{ kg/m}^3$).
+
+### 6. 🔍 Dual Independent Status Dashboard
+- **What It Does**: Renders two decoupled status cards:
+  - **🤖 ML Strength Prediction Card**: Displays predicted 28-day strength in MPa, mapped IS 456 grade (e.g. `M40+`), and a `STRENGTH PASS` or `STRENGTH FAIL` badge.
+  - **📜 IS 456:2000 Compliance Card**: Independently checks Cement content vs minimum requirement and W/C ratio ($\text{Water} \div \text{Cement}$) vs maximum allowed ratio, displaying a `CODE PASS` or `CODE FAIL` badge.
+- **What You Can Do**: Instantly distinguish between a structural strength failure and a durability/compliance code violation so you never have to guess why a mix failed.
+
+### 7. 💡 Intelligent Recommendation Engine & Interactive Re-Simulation Panel
+- **What It Does**: Triggers automatically whenever a mix fails strength OR code compliance. Identifies root causes and calculates directional adjustments with exact quantity deltas ($\pm \text{kg/m}^3$).
+- **What You Can Do**:
+  - View explicit step-by-step ingredient modifications (e.g., *"Increase Cement by +40.0 kg/m³"* or *"Decrease Water by -15.0 kg/m³"*).
+  - Compare **Before vs After** strength predictions and compliance status in a side-by-side verification table.
+  - Click **"✨ Apply Recommended Mix Proportions"** to automatically load the optimized, verified mix directly into the input form!
+
+---
+
 ## 🔬 Comprehensive Process & Workflow Architecture
 
 ```
@@ -86,27 +152,6 @@ When a mix fails strength OR compliance requirements:
 ### Step 4: Real-time Density & Weight Monitoring
 - Continuously sums all constituent weights per $\text{m}^3$ ($\text{Target} \approx 2400 \text{ kg/m}^3$).
 - Alerts user if total mix weight deviates from standard structural concrete density ($2200 - 2600 \text{ kg/m}^3$).
-
----
-
-## 🎯 Key Features Overview
-
-1. **28-Day Compressive Strength Prediction**:
-   - Machine Learning model trained on 1030 UCI concrete samples (80/20 train/test split, `random_state=42`).
-   - Inference strictly enforces **fixed 28-day curing age** (`age = 28.0`).
-   - Reports test set **RMSE** and **$R^2$** metrics dynamically in the UI.
-
-2. **IS 456:2000 Civil Engineering Logic Layer**:
-   - **Grade Mapping**: Automatically maps predicted strength to standard Indian Standard grades.
-   - **Independent Compliance Checking**: Evaluates target grade requirements independently of predicted strength.
-   - **Dual Dashboard**: Clear, distinct status cards separating Strength Pass/Fail from Code Compliance Pass/Fail.
-
-3. **Intelligent Recommendation Engine**:
-   - Specifies directional, ingredient-specific quantity deltas (in $\text{kg/m}^3$).
-   - Re-predicts strength and re-evaluates compliance on the adjusted mix.
-
-4. **Real-time Density Monitor**:
-   - Continuously sums total constituent weight ($\approx 2400 \text{ kg/m}^3$) and alerts users if mix density strays from structural norms.
 
 ---
 
