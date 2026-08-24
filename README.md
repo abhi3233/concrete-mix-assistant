@@ -4,6 +4,28 @@ An end-to-end Machine Learning web application designed for civil engineers, sit
 
 ---
 
+## 🛠️ Comprehensive Technology Stack & Architecture Details
+
+The application is built using a modern, robust Python machine learning and web stack designed for production reliability, fast inference, and seamless cloud deployment.
+
+| Layer / Category | Technology / Library | Version | Purpose & Technical Role |
+| :--- | :--- | :---: | :--- |
+| **Language** | **Python** | `3.10+ / 3.13` | Core runtime environment for data science, ML pipeline, and application logic. |
+| **Machine Learning** | **XGBoost Regressor** | `^3.4.1` | **Primary Predictive Model**: Selected after benchmarking for non-linear interactions ($R^2 = \mathbf{0.9141}$, $\text{RMSE} = \mathbf{4.71 \text{ MPa}}$). |
+| **Data Science & ML** | **Scikit-Learn** | `^1.9.0` | Dataset train/test splitting (`80/20, seed=42`), evaluation metrics (`r2_score`, `mean_squared_error`), and baseline benchmarks. |
+| **Data Manipulation** | **Pandas** | `^3.0.5` | Tabular data cleaning, feature mapping, input dataframe construction, and mix vector transformations. |
+| **Numerical Computing** | **NumPy** | `^2.0.0` | High-performance vectorized arithmetic, RMSE calculation, and statistical computations. |
+| **Model Serialization** | **Joblib** | `^1.5.3` | Exporting and fast loading of trained model artifacts (`model_assets.joblib`), feature importances, and evaluation metadata. |
+| **Web UI Framework** | **Streamlit** | `^1.62.0` | **Frontend Framework**: Reactive web dashboard, sidebar controls, session state management, and real-time input sliders. |
+| **UI Styling** | **Vanilla CSS3 & HTML5** | Standard | Custom CSS styling for glassmorphism card layouts, status badges (`CODE PASS`, `STRENGTH FAIL`), and responsive typography. |
+| **Data Acquisition** | **Urllib & Zipfile** | Standard Library | Automated fetching and extraction of the raw UCI Concrete Compressive Strength dataset. |
+| **Excel Parsing** | **Xlrd & Openpyxl** | `^2.0.2` / `^3.1.5` | Parsing and loading binary Microsoft Excel files (`Concrete_Data.xls`). |
+| **Automated Testing** | **Pytest** | `^9.1.1` | Unit test suite verifying IS 456 logic, grade mapping, 28-day age constraint, and recommendation re-simulation. |
+| **Version Control** | **Git & GitHub** | Standard | Source code versioning, collaboration, and public repository hosting ([abhi3233/concrete-mix-assistant](https://github.com/abhi3233/concrete-mix-assistant.git)). |
+| **Cloud Deployment** | **Hugging Face Spaces** | Free Tier | Public web app hosting containerized with Streamlit runtime. |
+
+---
+
 ## 🖥️ Interactive Dashboard & Features Guide (What You Can Do)
 
 The application features a clean, responsive dual-column dashboard tailored for intuitive operation by both technical evaluators and field site engineers.
